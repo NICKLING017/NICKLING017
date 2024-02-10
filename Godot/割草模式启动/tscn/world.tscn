@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://das20x8swkjgq"]
+
+[ext_resource type="Texture2D" uid="uid://5hxilycccvao" path="res://Res/Textures/img/background_1.png" id="1_v380w"]
+[ext_resource type="PackedScene" uid="uid://cx5ul66m2gosp" path="res://tscn/Player.tscn" id="2_ktu2p"]
+[ext_resource type="PackedScene" uid="uid://dtb4w0lr17hgy" path="res://tscn/enemy.tscn" id="3_7v43y"]
+
+[node name="World" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(648, 360)
+texture = ExtResource("1_v380w")
+region_enabled = true
+region_rect = Rect2(0, 0, 4000, 4000)
+
+[node name="Player" parent="." instance=ExtResource("2_ktu2p")]
+
+[node name="enemy_kolbold_weak" parent="." instance=ExtResource("3_7v43y")]
+position = Vector2(304, -112)
+scale = Vector2(2, 2)
