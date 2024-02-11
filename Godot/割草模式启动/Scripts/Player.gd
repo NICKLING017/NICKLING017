@@ -1,6 +1,7 @@
 extends CharacterBody2D
 
 var movement_speed = 400.0
+var hp = 80
 
 func _physics_process(delta):
 	movement()
@@ -22,3 +23,8 @@ func animateSprite(x_mov):
 	if x_mov < 0:
 		$AnimatedSprite2D.animation = "player_left"
 
+
+
+func _on_hurt_box_hurt(damage):
+	hp -= damage
+	print(hp)
