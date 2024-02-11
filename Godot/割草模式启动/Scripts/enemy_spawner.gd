@@ -21,8 +21,7 @@ func _on_timer_timeout():
 				i.spawn_delay_counter += 1
 			else :
 				i.spawn_delay_counter = 0
-				# 加载怪物场景（资源）
-				var new_enemy = load(str(i.enemy.resource_path))
+				var new_enemy = i.enemy
 				# 根据需要生成的敌人数量，循环实例化敌人
 				var counter = 0
 				while counter < i.enemy_num:
