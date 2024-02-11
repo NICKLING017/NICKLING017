@@ -1,8 +1,26 @@
-[gd_scene load_steps=4 format=3 uid="uid://das20x8swkjgq"]
+[gd_scene load_steps=8 format=3 uid="uid://das20x8swkjgq"]
 
 [ext_resource type="Texture2D" uid="uid://5hxilycccvao" path="res://Res/Textures/img/background_1.png" id="1_v380w"]
 [ext_resource type="PackedScene" uid="uid://cx5ul66m2gosp" path="res://tscn/Player.tscn" id="2_ktu2p"]
 [ext_resource type="PackedScene" uid="uid://dtb4w0lr17hgy" path="res://tscn/enemy.tscn" id="3_7v43y"]
+[ext_resource type="PackedScene" uid="uid://5d4y1u1x0evo" path="res://tscn/Utility/enemy_spawner.tscn" id="3_e14yl"]
+[ext_resource type="Script" path="res://Scripts/spawn_info.gd" id="5_easts"]
+
+[sub_resource type="Resource" id="Resource_pifts"]
+script = ExtResource("5_easts")
+time_start = 0
+time_end = 5
+enemy = ExtResource("3_7v43y")
+enemy_num = 1
+enemy_spawn_delay = 0
+
+[sub_resource type="Resource" id="Resource_585qf"]
+script = ExtResource("5_easts")
+time_start = 5
+time_end = 60
+enemy = ExtResource("3_7v43y")
+enemy_num = 10
+enemy_spawn_delay = 0
 
 [node name="World" type="Node2D"]
 
@@ -16,6 +34,6 @@ region_rect = Rect2(0, 0, 4000, 4000)
 
 [node name="Player" parent="." instance=ExtResource("2_ktu2p")]
 
-[node name="enemy_kolbold_weak" parent="." instance=ExtResource("3_7v43y")]
-position = Vector2(304, -112)
+[node name="EnemySpawner" parent="." instance=ExtResource("3_e14yl")]
 scale = Vector2(2, 2)
+spawns = Array[ExtResource("5_easts")]([SubResource("Resource_pifts"), SubResource("Resource_585qf")])
