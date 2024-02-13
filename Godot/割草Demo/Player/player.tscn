@@ -70,7 +70,7 @@ radius = 24.0
 height = 80.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jcens"]
-size = Vector2(48, 80)
+size = Vector2(64, 96)
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 motion_mode = 1

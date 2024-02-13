@@ -10,7 +10,7 @@ func _physics_process(delta):
 
 func movement():
 	# 怪物朝着玩家位置移动
-	var direction = global_position.direction_to(player.global_position)
+	var direction = get_global_position().direction_to(player.get_global_position())
 	velocity = direction * movement_speed
 	move_and_slide()
 	if velocity.x < 0:
