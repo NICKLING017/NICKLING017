@@ -25,8 +25,5 @@ region_rect = Rect2(0, 0, 4000, 4000)
 
 [node name="Player" parent="." instance=ExtResource("2_edqbx")]
 
-[node name="Enemy" parent="." instance=ExtResource("3_w54gm")]
-position = Vector2(250, -167)
-
 [node name="EnemySpawner" parent="." instance=ExtResource("4_52j3x")]
 spawns = Array[ExtResource("5_qkat2")]([SubResource("Resource_ot6ll")])
