@@ -25,13 +25,45 @@ func _on_timer_timeout():
 				var count = 0
 				while count < i.enemy_num :
 					var enemy_spawn = new_enemy.instantiate()
-					#enemy_spawn.global_position = get_random_position()
+					# 随机生成敌人的坐标位置
+					enemy_spawn.global_position = get_random_position()
+					# get_random_position()
 					add_child(enemy_spawn)
 					count += 1
-					print("生成敌人成功")
+					# print("生成敌人成功")
 
 
 
 
 func get_random_position():
-	pass
+	# 获取游戏窗口大小并随机增大范围
+	var viewport_size = get_viewport_rect().size  * randf_range(1.1,1.4)
+	var top_left = Vector2(player.global_position.x - viewport_size.x/2,player.global_position.y - viewport_size.y/2)
+	var top_right = Vector2(player.global_position.x + viewport_size.x/2,player.global_position.y - viewport_size.y/2)
+	var bottom_left = Vector2(player.global_position.x - viewport_size.x/2,player.global_position.y + viewport_size.y/2)
+	var bottom_right = Vector2(player.global_position.x + viewport_size.x/2,player.global_position.y + viewport_size.y/2)
+	# 随机选择一条边生成敌人
+	var pos_side = ["上","下","左","右"].pick_random()
+	var spawn_pos1 = Vector2.ZERO
+	var spawn_pos2 = Vector2.ZERO
+	match pos_side:
+		"上":
+			spawn_pos1 = top_left
+			spawn_pos2 = top_right
+		"下":
+			spawn_pos1 = bottom_left
+			spawn_pos2 = bottom_right
+		"左":
+			spawn_pos1 = top_left
+			spawn_pos2 = bottom_left
+		"右":
+			spawn_pos1 = top_right
+			spawn_pos2 = bottom_right
+
+	var x_spawn = randf_range(spawn_pos1.x,spawn_pos2.x)
+	var y_spawn = randf_range(spawn_pos1.y,spawn_pos2.y)
+	# print("生成敌人坐标：")
+	# print(Vector2(x_spawn,y_spawn))
+	return Vector2(x_spawn,y_spawn)
+
+
