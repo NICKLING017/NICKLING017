@@ -1,14 +1,36 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>奶娃工厂</title>
+    <title>Excel文本转JSON</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>测试1 h1</h1>
-    <h2>测试2 h2</h2>
-    <p><strong>奶娃奶娃</strong></p>
-    <p><em>臭臭奶娃！！！</em></p>
+    <header>
+        <h1>游戏策划工具 - Excel文本转JSON</h1>
+        <!-- 导航内容 -->
+        <nav>
+            <ul>
+                <li><a href="index.html">首页</a></li>
+                <li><a href="tool.html">Excel转JSON</a></li>
+                <li><a href="about.html">关于</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Excel文本转JSON工具</h2>
+            <p>在下方文本框中粘贴Excel复制的内容：</p>
+            <textarea id="excelText" placeholder="在这里粘贴Excel表格复制的文本" rows="10" cols="50"></textarea>
+            <button onclick="convertTextToJson()">转换为JSON</button>
+            <pre id="jsonResult"></pre>
+        </section>
+    </main>
+    <footer>
+        <!-- 页脚内容 -->
+        <p>&copy; 2024 游戏策划工具网站</p>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>
