@@ -20,7 +20,8 @@ var icespear_level = 1
 var enemy_close = []
 
 func _ready():
-	attack()
+	pass
+	#attack()
 
 func _physics_process(_delta):
 	movement()
@@ -41,7 +42,8 @@ func movement():
 
 
 func player_die():
-	print("角色死亡")
+	pass
+	#print("角色死亡")
 
 func attack():
 	if icespear_level > 0:
@@ -53,7 +55,7 @@ func attack():
 # HurtBox 发出的信号 传递了本次碰撞的damage进来
 func _on_hurt_box_hurt(damage):
 	hp -= damage
-	print(hp)
+	#print(hp)
 	if hp <= 0:
 		player_die()
 

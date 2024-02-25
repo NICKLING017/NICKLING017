@@ -13,7 +13,9 @@ func _on_area_entered(area):
 		collision.set_deferred("disabled",true)
 		# 然后开启计时器，方便持续碰撞生效
 		disabletimer.start()
+	print(area)
 	var damage = area.damage
+	print(damage)
 	emit_signal("hurt",damage)
 
 
