@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import filedialog
 from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
 
+
 def process_file(file_path):
     file_name = os.path.splitext(os.path.basename(file_path))[0]  # 获取文件名（不含扩展名）
 
@@ -16,7 +17,8 @@ def process_file(file_path):
     workbook = openpyxl.Workbook()
     heroes_sheet = workbook.active
     heroes_sheet.title = "英雄属性"
-    headers = ['BattleHID', 'HID', 'CurHP', 'MaxHP', 'HP Per Unit', 'ATK', 'DEF', 'UnitType', 'MaxUnitCount', 'SkillIds', 'SkillLevels', 'SLGAttrList', 'BattleProperty', 'Position']
+    headers = ['BattleHID', 'HID', 'CurHP', 'MaxHP', 'HP Per Unit', 'ATK', 'DEF', 'UnitType', 'MaxUnitCount',
+               'SkillIds', 'SkillLevels', 'SLGAttrList', 'BattleProperty', 'Position']
     heroes_sheet.append(headers)
 
     sorted_attackers = sorted(data['Logs'][0]['Attackers'], key=lambda x: x['BattleHID'])
@@ -25,14 +27,18 @@ def process_file(file_path):
     is_first_two = True
 
     for hero in sorted_heroes:
+        # 在进攻方和防守方插入一个空行
+        test = hero['BattleHID'] // 10
+        print(test)
         if hero['BattleHID'] // 10 == 2 and is_first_two:
             heroes_sheet.append([])
             is_first_two = False
         hp_per_unit = hero['MaxHP'] / hero['MaxUnitCount'] if hero['MaxUnitCount'] != 0 else 0
-        row = [hero['BattleHID'], hero['HID'], hero['CurHP'], hero['MaxHP'], hp_per_unit, hero['ATK'], hero['DEF'], hero['UnitType'], hero['MaxUnitCount'], str(hero['SkillIds']), str(hero['SkillLevels']), str(hero['SLGAttrList']), str(hero['BattleProperty']), hero['Position']]
+        row = [hero['BattleHID'], hero['HID'], hero['CurHP'], hero['MaxHP'], hp_per_unit, hero['ATK'], hero['DEF'],
+               hero['UnitType'], hero['MaxUnitCount'], str(hero['SkillIds']), str(hero['SkillLevels']),
+               str(hero['SLGAttrList']), str(hero['BattleProperty']), hero['Position']]
         heroes_sheet.append(row)
 
-    # 假设你已经有了一个包含所有BattleHID的列表，例如：
     battle_hids = {log['BattleHID'] for log in data['Logs'] if 'FromHP' in log and 'ToHP' in log}
     # 然后按照BattleHID的数值进行排序
     sorted_hids = sorted(battle_hids)
@@ -43,7 +49,7 @@ def process_file(file_path):
         sheet_name = f"部队{hid}"
         sheets[hid] = workbook.create_sheet(title=sheet_name)
 
-    # 现在，当你处理日志时，使用相应的工作表：
+    # 处理日志时，使用相应的工作表：
     for log in data['Logs']:
         if 'FromHP' in log and 'ToHP' in log:
             battle_hid = log['BattleHID']
@@ -96,7 +102,7 @@ def process_file(file_path):
             worksheet.row_dimensions[row[0].row].height = 20
 
     # 获取原始文件所在的目录
-    original_directory = os.path.dirname(file_path)  # 假设 file_path 是你的原始文件路径
+    original_directory = os.path.dirname(file_path)  # 原始文件路径
     # 创建新的目录路径
     new_directory = os.path.join(original_directory, '战报分析')
 
@@ -110,11 +116,13 @@ def process_file(file_path):
     # 保存Excel文件到新的文件夹
     workbook.save(new_file_path)
 
+
 def open_file_dialog():
     file_path = filedialog.askopenfilename()
     if file_path:
         process_file(file_path)
         label.config(text=f"处理完成: {file_path}")
+
 
 root = tk.Tk()
 root.title('战报分析工具')
