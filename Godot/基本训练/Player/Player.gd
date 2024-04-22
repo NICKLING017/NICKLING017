@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @export var speed = 400
-@export var max_scale_factor = Vector2(2, 2)
+@export var max_scale_factor = Vector2(1.1, 1.1)
 
 var default_scale = Vector2(1, 1) # 默认缩放为1
 var charging = false # 是否正在蓄力
