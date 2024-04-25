@@ -1,5 +1,9 @@
 extends CharacterBody2D
 
+@onready var shoot_pos = $shoot_pos
+@onready var timer = $Timer
+@onready var bullet = preload("res://Bullet/bullet.tscn")
+
 @export var speed = 400
 @export var max_scale_factor = Vector2(1.1, 1.1)
 
@@ -9,6 +13,9 @@ var should_restore_scale = false # 是否开始恢复缩放
 @export var restore_speed = 2 # 恢复缩放速度
 var charge_time = 0.0 # 蓄力时间
 var can_charge = true # 初始时允许蓄力
+var bullet_shoot_time = 0.5 #子弹发射时间间隔
+var bullet_speed = 2000
+var bullet_hurt = 1
 
 func _ready():
 	default_scale = scale
@@ -45,3 +52,15 @@ func _physics_process(delta):
 	get_input_move()
 	get_input_skill(delta)
 	move_and_slide()
+
+
+func _on_timer_timeout():
+	var now_bullet = bullet.instantiate() # 实例化子弹
+	var mouse_position = get_global_mouse_position() # 鼠标全局位置
+	now_bullet.speed = bullet_speed
+	now_bullet.hurt = bullet_hurt
+	now_bullet.position = shoot_pos.global_position
+	var direction = (mouse_position - shoot_pos.global_position).normalized() # 子弹向鼠标方向发射
+	now_bullet.dir = direction
+	get_tree().root.add_child(now_bullet)
+	pass # Replace with function body.

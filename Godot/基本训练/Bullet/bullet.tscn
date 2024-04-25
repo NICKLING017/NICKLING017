@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://c2r7kh5vh37i5"]
+
+[ext_resource type="Script" path="res://Bullet/bullet.gd" id="1_n806q"]
+[ext_resource type="Texture2D" uid="uid://ck78k4h5sn78k" path="res://res/img/bullet.png" id="1_pgeam"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ywd10"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_pgeam")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_skcpx"]
+size = Vector2(16, 16)
+
+[node name="bullet" type="CharacterBody2D"]
+scale = Vector2(2, 2)
+script = ExtResource("1_n806q")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(2.66667, 4)
+sprite_frames = SubResource("SpriteFrames_ywd10")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_skcpx")
