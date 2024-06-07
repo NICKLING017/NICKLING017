@@ -1,6 +1,6 @@
 import tkinter as tk
 import ctypes
-from tkinter import colorchooser, simpledialog, messagebox, filedialog, Menu, OptionMenu
+from tkinter import colorchooser, simpledialog, messagebox, filedialog, OptionMenu
 import json
 import os
 
@@ -77,16 +77,14 @@ class CrosshairOverlay(tk.Tk):
                                         center_x, center_y + self.crosshair_size + self.crosshair_distance + self.crosshair_gap,
                                         fill=self.crosshair_color, width=self.crosshair_width)
             ]
-        elif self.crosshair_lines_style == "concentric_circles":
-            for i in range(1, 5):
-                self.canvas.create_oval(center_x - i * self.crosshair_size, center_y - i * self.crosshair_size,
-                                        center_x + i * self.crosshair_size, center_y + i * self.crosshair_size,
-                                        outline=self.crosshair_color, width=self.crosshair_width)
-        elif self.crosshair_lines_style == "concentric_squares":
-            for i in range(1, 5):
-                self.canvas.create_rectangle(center_x - i * self.crosshair_size, center_y - i * self.crosshair_size,
-                                             center_x + i * self.crosshair_size, center_y + i * self.crosshair_size,
-                                             outline=self.crosshair_color, width=self.crosshair_width)
+        elif self.crosshair_lines_style == "concentric_circle":
+            self.canvas.create_oval(center_x - self.crosshair_size - self.crosshair_distance, center_y - self.crosshair_size - self.crosshair_distance,
+                                    center_x + self.crosshair_size + self.crosshair_distance, center_y + self.crosshair_size + self.crosshair_distance,
+                                    outline=self.crosshair_color, width=self.crosshair_width)
+        elif self.crosshair_lines_style == "concentric_square":
+            self.canvas.create_rectangle(center_x - self.crosshair_size - self.crosshair_distance, center_y - self.crosshair_size - self.crosshair_distance,
+                                         center_x + self.crosshair_size + self.crosshair_distance, center_y + self.crosshair_size + self.crosshair_distance,
+                                         outline=self.crosshair_color, width=self.crosshair_width)
 
     def hide_crosshair(self):
         # 隐藏准心
@@ -129,7 +127,7 @@ class CrosshairOverlay(tk.Tk):
         lines_label = tk.Label(self.menu_window, text="Select Lines Style:")
         lines_label.pack(pady=5)
         self.lines_var = tk.StringVar(value=self.crosshair_lines_style)
-        lines_styles = ["lines", "concentric_circles", "concentric_squares"]
+        lines_styles = ["lines", "concentric_circle", "concentric_square"]
         lines_menu = OptionMenu(self.menu_window, self.lines_var, *lines_styles, command=self.update_lines_style)
         lines_menu.pack(pady=5)
 
@@ -148,15 +146,15 @@ class CrosshairOverlay(tk.Tk):
         self.width_slider.pack(pady=5)
 
         # 创建距离滑动条
-        distance_label = tk.Label(self.menu_window, text="Line Distance from Center:")
-        distance_label.pack(pady=5)
+        self.distance_label = tk.Label(self.menu_window, text="Line Distance from Center:")
+        self.distance_label.pack(pady=5)
         self.distance_slider = tk.Scale(self.menu_window, from_=0, to=100, orient=tk.HORIZONTAL, command=self.update_distance)
         self.distance_slider.set(self.crosshair_distance)
         self.distance_slider.pack(pady=5)
 
         # 创建间隙滑动条
-        gap_label = tk.Label(self.menu_window, text="Gap Between Line and Dot:")
-        gap_label.pack(pady=5)
+        self.gap_label = tk.Label(self.menu_window, text="Gap Between Line and Dot:")
+        self.gap_label.pack(pady=5)
         self.gap_slider = tk.Scale(self.menu_window, from_=0, to=50, orient=tk.HORIZONTAL, command=self.update_gap)
         self.gap_slider.set(self.crosshair_gap)
         self.gap_slider.pack(pady=5)
