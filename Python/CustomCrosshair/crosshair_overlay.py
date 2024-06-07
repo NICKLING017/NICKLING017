@@ -111,6 +111,9 @@ class CrosshairOverlay(tk.Tk):
         self.menu_window.title("Crosshair Settings")
         self.menu_window.geometry("400x700")
 
+        # 确保点击右上角的关闭按钮时调用 quit_app 方法
+        self.menu_window.protocol("WM_DELETE_WINDOW", self.quit_app)
+
         # 创建颜色选择按钮
         color_button = tk.Button(self.menu_window, text="Select Crosshair Color", command=self.select_color)
         color_button.pack(pady=10)
