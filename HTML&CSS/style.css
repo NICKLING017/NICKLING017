@@ -1,94 +1,249 @@
-/* 基础重置 */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
 body {
-    background-color: #f0f2f5;
-    color: #333;
-    line-height: 1.6;
-    font-size: 16px;
-}
-
-/* 容器 */
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 20px;
-}
-
-/* 导航条样式 */
-header, footer {
-    background-color: #007bff;
-    color: #ffffff;
-    padding: 20px;
-    text-align: center;
-}
-
-header h1 {
     margin: 0;
+    font-family: 'Roboto', sans-serif; /* 使用现代字体 */
+    background-color: #121212; /* 背景颜色为深色 */
+    color: #e0e0e0; /* 字体颜色为浅色 */
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* 视口高度 */
 }
 
-nav ul {
-    padding: 0;
-    list-style: none;
+.navbar {
+    background-color: #1f1f1f; /* 导航栏背景颜色 */
+    padding: 20px; /* 内边距 */
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    position: relative; /* 相对定位 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 添加阴影 */
 }
 
-nav ul li {
-    display: inline;
-    margin-left: 20px;
+.back-button {
+    position: absolute; /* 绝对定位 */
+    left: 20px; /* 距左边的距离 */
+    top: 50%; /* 垂直居中 */
+    transform: translateY(-50%); /* 垂直居中调整 */
+    background-color: #ff9800; /* 按钮背景颜色 */
+    color: #fff; /* 按钮字体颜色 */
+    padding: 8px 12px; /* 内边距 */
+    border-radius: 5px; /* 圆角边框 */
+    cursor: pointer; /* 鼠标悬停时显示手型指针 */
+    transition: background-color 0.3s; /* 颜色过渡效果 */
 }
 
-nav ul li a {
-    color: #ffffff;
-    text-decoration: none;
-    font-weight: bold;
+.back-button:hover {
+    background-color: #e68a00; /* 悬停时的背景颜色 */
 }
 
-nav ul li a:hover {
-    color: #d4d4d4;
-}
-
-/* 主要内容区域 */
-main {
-    padding: 20px;
-    background: #ffffff;
-    margin-top: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-main h2 {
-    color: #007bff;
+.navbar h1 {
+    margin: 0;
+    font-size: 28px; /* 字体大小 */
 }
 
 
-/* 按钮样式 */
-button {
-    background-color: #007bff;
-    color: #ffffff;
+/* 主容器样式 */
+.container {
+    display: flex; /* 使用弹性布局 */
+    justify-content: space-between; /* 模块之间的间距自动分配 */
+    padding: 30px; /* 内边距 */
+    box-sizing: border-box;
+    gap: 20px; /* 模块之间的间距 */
+    flex: 1;
+}
+
+/* 每个模块的样式 */
+.team-section {
+    background-color: #2c2c2c; /* 模块背景颜色 */
+    padding: 20px; /* 内边距 */
+    border-radius: 10px; /* 圆角边框 */
+    width: 45%; /* 模块宽度 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 添加阴影 */
+}
+
+/* 模块标题样式 */
+.team-section h2 {
+    text-align: center; /* 标题居中对齐 */
+    margin-bottom: 20px; /* 底部外边距 */
+    font-size: 22px; /* 字体大小 */
+}
+
+/* 英雄卡片容器 */
+.hero-card {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #444; /* 边框颜色 */
+    border-radius: 10px; /* 圆角边框 */
+    background-color: #1e1e1e; /* 背景颜色 */
+}
+
+.hero-info {
+    display: flex;
+    flex-direction: column; /* 纵向排列 */
+    align-items: center; /* 水平居中 */
+    padding: 10px; /* 内边距 */
+    gap: 5px; /* 元素之间的间距 */
+}
+
+.hero-image {
+    width: 80px; /* 调整图片宽度 */
+    height: auto; /* 自动调整高度 */
+    border-radius: 50%; /* 圆形图片 */
+}
+
+.ID-input {
+    width: 70px; /* 调整输入框宽度 */
+    text-align: center; /* 文本居中 */
+    margin: 0; /* 去除外边距 */
+    padding: 5px; /* 内边距 */
+}
+
+h3 {
+    margin: 5px 0; /* 调整标题的上下外边距 */
+    font-size: 16px; /* 字体大小 */
+    text-align: center; /* 文本居中 */
+}
+
+/* 竖线分隔 */
+.separator {
+    width: 2px;
+    height: 150px;
+    background-color: #444; /* 分隔线颜色 */
+    margin-right: 20px; /* 右边距 */
+}
+
+/* 英雄设置区域 */
+.hero-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* 间距 */
+}
+
+/* 英雄属性容器的样式 */
+.attributes-container {
+    display: flex;
+    gap: 15px; /* 间距 */
+    margin-bottom: 10px; /* 底部外边距 */
+}
+
+/* 英雄属性信息的样式 */
+.attributes-container p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+/* 输入框的样式 */
+.attribute-input {
+    background-color: #333; /* 输入框背景颜色 */
+    color: #fff; /* 输入框字体颜色 */
     border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+    border-radius: 5px; /* 圆角边框 */
+    font-size: 14px; /* 字体大小 */
+    width: 50px; /* 输入框宽度 */
+    text-align: center; /* 文本居中 */
+    padding: 5px; /* 内边距 */
+    margin-left: 5px;
 }
 
-/* 鼠标悬停到按钮样式 */
-button:hover {
-    background-color: #0056b3;
+/* 部队类型下拉框的样式 */
+.troop-type-select {
+    background-color: #333; /* 下拉框背景颜色 */
+    color: #fff; /* 下拉框字体颜色 */
+    border: none;
+    border-radius: 5px; /* 圆角边框 */
+    padding: 5px; /* 内边距 */
+    cursor: pointer; /* 鼠标悬停时显示手型指针 */
+    font-size: 14px; /* 字体大小 */
+    width: 100px; /* 下拉框宽度 */
+    margin-left: 5px;
 }
 
-/* 底部样式 */
-footer {
-    margin-top: 20px;
+.troop-type-select option {
+    background-color: #fff; /* 选项背景颜色 */
+    color: #000; /* 选项字体颜色 */
 }
 
+.button {
+    background-color: #4CAF50; /* 按钮背景颜色 */
+    color: white; /* 字体颜色 */
+    padding: 10px 20px; /* 内边距 */
+    border: none; /* 无边框 */
+    border-radius: 5px; /* 圆角 */
+    cursor: pointer; /* 鼠标悬停时显示手型指针 */
+    font-size: 16px; /* 字体大小 */
+    transition: background-color 0.3s; /* 背景颜色过渡效果 */
+    margin-left: 10px;
+    margin-right: 10px;
+}
 
-#countdown {
-    text-align: center; /* 水平居中 */
-    font-size: 24px; /* 调整字体大小 */
+.button:hover {
+    background-color: #c99e43; /* 悬停时的背景颜色 */
+}
+
+.header-container {
+    display: flex;
+    justify-content: center; /* 水平居中 */
+    align-items: center; /* 垂直居中 */
+    margin-bottom: 20px; /* 底部外边距 */
+}
+
+.header-container h2 {
+    margin-right: 100px; /* 标题和按钮之间的间距 */
+}
+
+/* 输入框的样式 */
+.ID-input {
+    width: 70px; /* 调整输入框宽度 */
+    text-align: center; /* 文本居中 */
+    margin: 0; /* 去除外边距 */
+    padding: 5px; /* 内边距 */
+    background-color: #333; /* 输入框背景颜色 */
+    color: #fff; /* 输入框字体颜色 */
+    border: none;
+    border-radius: 5px; /* 圆角边框 */
+    font-size: 12px; /* 字体大小 */
+    text-align: center; /* 文本居中 */
+    padding: 5px; /* 内边距 */
+}
+
+.battle-container {
+    display: flex;
+    justify-content: center; /* 水平居中对齐 */
+    align-items: center; /* 垂直居中对齐 */
+    gap: 20px; /* 两个部分之间的间距 */
+}
+
+.vs-container {
+    display: flex;
+    flex-direction: column; /* 纵向排列 */
+    align-items: center; /* 水平居中 */
+    gap: 10px; /* 图标和按钮之间的间距 */
+}
+
+.vs-icon {
+    font-size: 30px; /* 字体大小 */
+    font-weight: bold; /* 字体加粗 */
+    color: #fff; /* 字体颜色 */
+    background-color: #ff9800; /* 背景颜色 */
+    padding: 10px 20px; /* 内边距 */
+    border-radius: 50%; /* 圆形背景 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.start-button {
+    background-color: #4CAF50; /* 按钮背景颜色 */
+    color: white; /* 字体颜色 */
+    padding: 10px 20px; /* 内边距 */
+    border: none; /* 无边框 */
+    border-radius: 5px; /* 圆角 */
+    cursor: pointer; /* 鼠标悬停时显示手型指针 */
+    font-size: 14px; /* 字体大小 */
+    transition: background-color 0.3s; /* 背景颜色过渡效果 */
+}
+
+.start-button:hover {
+    background-color: #45a049; /* 悬停时的背景颜色 */
 }

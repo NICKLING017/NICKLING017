@@ -1,53 +1,51 @@
-function convertTextToJson() {
-    var text = document.getElementById('excelText').value;
-    // 假设每行数据由制表符分隔
-    var lines = text.trim().split('\n');
-    var result = lines.map(line => {
-        var cells = line.split('\t').map(cell => cell.trim());
-        return cells;
-    });
+function generateHeroCards(team) {
+    const containerId = team === 'offense' ? 'offenseHeroCards' : 'defenseHeroCards';
+    const inputId = team === 'offense' ? 'offenseHeroCount' : 'defenseHeroCount';
+    const container = document.getElementById(containerId);
+    const heroCount = document.getElementById(inputId).value;
+    
+    container.innerHTML = ''; // 清空现有卡片
 
-    // 如果需要将其转换为对象数组（根据表头）
-    var headers = result[0];
-    var jsonResult = result.slice(1).map(row => {
-        var obj = {};
-        row.forEach((cell, index) => {
-            obj[headers[index]] = cell;
-        });
-        return obj;
-    });
-
-    document.getElementById('jsonResult').textContent = JSON.stringify(jsonResult, null, 2);
+    for (let i = 0; i < heroCount; i++) {
+        const heroCard = document.createElement('div');
+        heroCard.className = 'hero-card';
+        
+        heroCard.innerHTML = `
+            <div class="hero-info">
+                <img src="hero1.png" class="hero-image" alt="Hero ${i + 1}">
+                <p><input type="number" value="10026004" class="ID-input"></p>
+                <h3>白石飞鸟</h3>
+            </div>
+            <div class="separator"></div>
+            <div class="hero-settings">
+                <div class="attributes-container">
+                    <p>等级: <input type="number" value="80" class="attribute-input"></p>
+                    <p>星级: <input type="number" value="6" class="attribute-input"></p>
+                    <p>阶级: <input type="number" value="25" class="attribute-input"></p>
+                </div>
+                <div class="attributes-container">
+                    <p>(少女元气)技能1: <input type="number" value="25" class="attribute-input"></p>
+                    <p>(流行飞弹)技能2: <input type="number" value="25" class="attribute-input"></p>
+                    <p>(自我治愈)技能3: <input type="number" value="25" class="attribute-input"></p>
+                    <p>(枪破固防)技能4: <input type="number" value="25" class="attribute-input"></p>
+                    <p>(气功疗愈)技能5: <input type="number" value="25" class="attribute-input"></p>
+                </div>
+                <div class="attributes-container">
+                    <p>兵种: <select class="troop-type-select">
+                        <option value="1级杀手">1级杀手</option>
+                        <option value="2级杀手">2级杀手</option>
+                        <option value="3级杀手">3级杀手</option>
+                        <option value="4级杀手">4级杀手</option>
+                        <option value="5级杀手">5级杀手</option>
+                    </select></p>
+                    <p>部队数量: <input type="number" value="996" class="attribute-input"></p>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(heroCard);
+    }
 }
 
-
-// 获取倒计时容器
-var countdownElement = document.getElementById("countdown");
-
-// 设置倒计时结束时间
-var countDownDate = new Date("Dec 24, 2024 23:59:59").getTime();
-
-// 每秒更新倒计时
-var countdownInterval = setInterval(function() {
-    // 获取当前时间
-    var now = new Date().getTime();
-
-    // 计算剩余时间
-    var distance = countDownDate - now;
-
-    // 计算剩余时间中的天、时、分、秒
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // 在倒计时容器中显示剩余时间
-    countdownElement.innerHTML = days + "天 " + hours + "时 "
-    + minutes + "分 " + seconds + "秒 ";
-
-    // 如果倒计时结束，则显示提示信息并停止更新倒计时
-    if (distance < 0) {
-        clearInterval(countdownInterval);
-        countdownElement.innerHTML = "倒计时结束";
-    }
-}, 1000); // 每秒更新一次
+document.getElementById('offenseHeroCount').addEventListener('input', () => generateHeroCards('offense'));
+document.getElementById('defenseHeroCount').addEventListener('input', () => generateHeroCards('defense'));
