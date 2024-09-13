@@ -29,17 +29,42 @@ function isMonitoredSite(url) {
 
 // 更新计时
 function updateTimer(tabId, url) {
-  if (isMonitoredSite(url)) {
+  const isFishing = isMonitoredSite(url);
+  if (isFishing) {
     if (activeTabId !== tabId || currentFishingSite !== new URL(url).hostname) {
       if (activeTabId !== null) {
         stopTimer();
       }
       startTimer(tabId, new URL(url).hostname);
+      
+      // 注入 CSS
+      chrome.tabs.insertCSS(tabId, {file: "content.css"}, function() {
+        if (chrome.runtime.lastError) {
+          console.log('Error inserting CSS:', chrome.runtime.lastError);
+        }
+      });
+
+      // 注入并执行脚本
+      chrome.tabs.executeScript(tabId, {file: "content.js"}, function() {
+        if (chrome.runtime.lastError) {
+          console.log('Error executing script:', chrome.runtime.lastError);
+        } else {
+          chrome.tabs.sendMessage(tabId, {
+            action: 'showNotification',
+            message: '您正在摸鱼！'
+          }, function(response) {
+            if (chrome.runtime.lastError) {
+              console.log('Error sending message:', chrome.runtime.lastError);
+            } else {
+              console.log('Message sent successfully');
+            }
+          });
+        }
+      });
     }
   } else if (activeTabId === tabId) {
     stopTimer();
   }
-  // 无论如何，都更新当前状态
   updateCurrentStatus();
 }
 
@@ -68,6 +93,7 @@ function stopTimer() {
     startTime = null;
     currentFishingSite = null;
     updateCurrentStatus();
+    updateBadge(false); // 添加这行
   }
 }
 
@@ -155,3 +181,23 @@ setInterval(function() {
     updateCurrentStatus(); // 确保当前状态始终是最新的
   }
 }, 1000); // 每1秒更新一次
+
+// 添加这个新函数
+function updateBadge(isFishing) {
+  if (isFishing) {
+    chrome.browserAction.setBadgeText({text: '摸鱼'});
+    chrome.browserAction.setBadgeBackgroundColor({color: '#FF0000'}); // 红色背景
+  } else {
+    chrome.browserAction.setBadgeText({text: ''});
+  }
+}
+
+// 在浏览器启动时初始化 badge
+chrome.runtime.onStartup.addListener(function() {
+  updateBadge(false);
+});
+
+// 在插件安装或更新时初始化 badge
+chrome.runtime.onInstalled.addListener(function() {
+  updateBadge(false);
+});
