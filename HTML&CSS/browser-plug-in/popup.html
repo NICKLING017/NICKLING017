@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>摸鱼时间统计器</title>
+    <style>
+      body { width: 300px; padding: 10px; }
+      input { width: 70%; margin-bottom: 10px; }
+      button { width: 25%; }
+      #timeStats { margin-top: 10px; }
+      .site-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+      .remove-site { cursor: pointer; color: red; }
+    </style>
+  </head>
+  <body>
+    <h2>摸鱼时间统计器</h2>
+    <div>
+      <input type="text" id="siteInput" placeholder="输入网站 URL（例如：www.example.com）">
+      <button id="addSite">添加</button>
+    </div>
+    <div id="siteList"></div>
+    <div id="timeStats"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

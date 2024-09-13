@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>战斗模拟器</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <header class="navbar">
+        <button class="back-button" onclick="window.history.back();">返回</button>
+        <h1>战斗模拟器</h1>
+    </header>
+    
+    <main class="container">
+        <div class="battle-container">
+            <section class="team-section" id="attackers">
+                <div class="header-container">
+                    <h2>进攻方</h2>
+                    <label>英雄数量：<input type="number" value="5" class="attribute-input" id="attacker-count"></label>
+                    <button class="button" data-action="random">随机生成</button>
+                    <button class="button" data-action="load">加载预设</button>
+                    <button class="button" data-action="save">保存阵容</button>
+                </div>
+                <div class="hero-list" id="attacker-heroes"></div>
+            </section>
+
+            <div class="vs-container">
+                <div class="vs-icon">VS</div>
+                <button class="start-button">开始战斗</button>
+            </div>
+
+            <section class="team-section" id="defenders">
+                <div class="header-container">
+                    <h2>防御方</h2>
+                    <label>英雄数量：<input type="number" value="5" class="attribute-input" id="defender-count"></label>
+                    <button class="button" data-action="random">随机生成</button>
+                    <button class="button" data-action="load">加载预设</button>
+                    <button class="button" data-action="save">保存阵容</button>
+                </div>
+                <div class="hero-list" id="defender-heroes"></div>
+            </section>
+        </div>
+    </main>
+
+    <template id="hero-card-template">
+        <div class="hero-card">
+            <div class="hero-info">
+                <img src="" alt="英雄头像" class="hero-image">
+                <label>ID: <input type="number" class="ID-input"></label>
+                <h3 class="hero-name"></h3>
+            </div>
+            <div class="separator"></div>
+            <div class="hero-settings">
+                <div class="attributes-container">
+                    <label>等级: <input type="number" class="attribute-input" data-attr="level"></label>
+                    <label>星级: <input type="number" class="attribute-input" data-attr="star"></label>
+                    <label>阶级: <input type="number" class="attribute-input" data-attr="class"></label>
+                </div>
+                <div class="attributes-container skills">
+                    <!-- 技能将通过JavaScript动态生成 -->
+                </div>
+                <div class="attributes-container">
+                    <label>兵种: 
+                        <select class="troop-type-select">
+                            <option value="1">1级杀手</option>
+                            <option value="2">2级杀手</option>
+                            <option value="3">3级杀手</option>
+                            <option value="4">4级杀手</option>
+                            <option value="5">5级杀手</option>
+                        </select>
+                    </label>
+                    <label>部队数量: <input type="number" class="attribute-input" data-attr="troopCount"></label>
+                </div>
+            </div>
+        </div>
+    </template>
+</body>
+</html>
