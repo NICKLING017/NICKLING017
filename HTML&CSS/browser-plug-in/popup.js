@@ -150,4 +150,36 @@ document.addEventListener('DOMContentLoaded', function() {
   autoResetCheckbox.addEventListener('change', function() {
     chrome.storage.sync.set({autoReset: this.checked});
   });
+
+  const customMessageInput = document.getElementById('customMessage');
+  const saveCustomMessageButton = document.getElementById('saveCustomMessage');
+
+  // 加载自定义消息
+  chrome.storage.sync.get(['customMessage'], function(result) {
+    customMessageInput.value = result.customMessage || '您正在摸鱼！';
+  });
+
+  // 保存自定义消息
+  saveCustomMessageButton.addEventListener('click', function() {
+    const message = customMessageInput.value.trim();
+    if (message) {
+      chrome.storage.sync.set({customMessage: message}, function() {
+        alert('自定义消息已保存！');
+      });
+    }
+  });
+
+  const enableNotificationCheckbox = document.getElementById('enableNotification');
+
+  // 加载启用提示设置
+  chrome.storage.sync.get(['enableNotification'], function(result) {
+    enableNotificationCheckbox.checked = result.enableNotification !== false;
+  });
+
+  // 保存启用提示设置
+  enableNotificationCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({enableNotification: this.checked}, function() {
+      console.log('启用提示设置已保存:', enableNotificationCheckbox.checked);
+    });
+  });
 });

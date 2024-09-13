@@ -37,26 +37,32 @@ function updateTimer(tabId, url) {
       }
       startTimer(tabId, new URL(url).hostname);
       
-      // 注入 CSS
-      chrome.tabs.insertCSS(tabId, {file: "content.css"}, function() {
-        if (chrome.runtime.lastError) {
-          console.log('Error inserting CSS:', chrome.runtime.lastError);
-        }
-      });
-
-      // 注入并执行脚本
-      chrome.tabs.executeScript(tabId, {file: "content.js"}, function() {
-        if (chrome.runtime.lastError) {
-          console.log('Error executing script:', chrome.runtime.lastError);
-        } else {
-          chrome.tabs.sendMessage(tabId, {
-            action: 'showNotification',
-            message: '您正在摸鱼！'
-          }, function(response) {
+      chrome.storage.sync.get(['enableNotification', 'customMessage'], function(result) {
+        console.log('启用提示设置:', result.enableNotification); // 添加这行日志
+        if (result.enableNotification !== false) { // 默认为true
+          // 注入 CSS
+          chrome.tabs.insertCSS(tabId, {file: "content.css"}, function() {
             if (chrome.runtime.lastError) {
-              console.log('Error sending message:', chrome.runtime.lastError);
+              console.log('Error inserting CSS:', chrome.runtime.lastError);
+            }
+          });
+
+          // 注入并执行脚本
+          chrome.tabs.executeScript(tabId, {file: "content.js"}, function() {
+            if (chrome.runtime.lastError) {
+              console.log('Error executing script:', chrome.runtime.lastError);
             } else {
-              console.log('Message sent successfully');
+              const message = result.customMessage || '您正在摸鱼！';
+              chrome.tabs.sendMessage(tabId, {
+                action: 'showNotification',
+                message: message
+              }, function(response) {
+                if (chrome.runtime.lastError) {
+                  console.log('Error sending message:', chrome.runtime.lastError);
+                } else {
+                  console.log('Message sent successfully');
+                }
+              });
             }
           });
         }
