@@ -76,7 +76,11 @@ function stopTimer() {
 
 // 更新当前状态
 function updateCurrentStatus() {
-  chrome.storage.sync.set({currentFishingSite: currentFishingSite});
+  if (currentFishingSite) {
+    chrome.storage.sync.set({currentFishingSite: currentFishingSite});
+  } else {
+    chrome.storage.sync.remove('currentFishingSite');
+  }
 }
 
 // 监听标签更新
@@ -109,11 +113,18 @@ chrome.windows.onFocusChanged.addListener(function(windowId) {
 // 监听来自popup的消息
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === "getCurrentStatus") {
-    sendResponse({currentFishingSite: currentFishingSite});
+    // 确保在发送响应之前获取最新状态
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      if (tabs.length > 0) {
+        updateTimer(tabs[0].id, tabs[0].url);
+      }
+      sendResponse({currentFishingSite: currentFishingSite});
+    });
+    return true; // 表示我们会异步发送响应
   }
 });
 
-// 定期更新存储中的时间（每10秒更新一次）
+// 定期更新存储中的时间（每1秒更新一次）
 setInterval(function() {
   if (startTime !== null && activeTabId !== null && currentFishingSite) {
     const duration = (Date.now() - startTime) / 1000; // 转换为秒
@@ -123,5 +134,6 @@ setInterval(function() {
       chrome.storage.sync.set({timeStats: stats});
     });
     startTime = Date.now(); // 重置开始时间
+    updateCurrentStatus(); // 确保当前状态始终是最新的
   }
 }, 1000); // 每1秒更新一次
