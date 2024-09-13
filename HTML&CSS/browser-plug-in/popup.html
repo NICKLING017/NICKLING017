@@ -3,23 +3,23 @@
   <head>
     <meta charset="UTF-8">
     <title>摸鱼时间统计器</title>
-    <style>
-      body { width: 300px; padding: 10px; }
-      input { width: 70%; margin-bottom: 10px; }
-      button { width: 25%; }
-      #timeStats { margin-top: 10px; }
-      .site-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
-      .remove-site { cursor: pointer; color: red; }
-    </style>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <h2>摸鱼时间统计器</h2>
-    <div>
-      <input type="text" id="siteInput" placeholder="输入网站 URL（例如：www.example.com）">
-      <button id="addSite">添加</button>
+    <div class="input-group">
+      <button id="addCurrentSite">把当前网站加入摸鱼列表</button>
     </div>
     <div id="siteList"></div>
+    <div id="fishingStatus"></div>
     <div id="timeStats"></div>
+    <div class="control-group">
+      <button id="resetStats">重置统计</button>
+      <div>
+        <input type="checkbox" id="autoReset">
+        <label for="autoReset">每天自动重置</label>
+      </div>
+    </div>
     <script src="popup.js"></script>
   </body>
 </html>

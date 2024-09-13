@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const addSiteButton = document.getElementById('addSite');
-  const siteInput = document.getElementById('siteInput');
+  const addCurrentSiteButton = document.getElementById('addCurrentSite');
   const siteList = document.getElementById('siteList');
   const timeStats = document.getElementById('timeStats');
   const fishingStatus = document.createElement('div');
@@ -10,22 +9,29 @@ document.addEventListener('DOMContentLoaded', function() {
   // 加载已保存的网站列表
   loadSites();
 
-  // 添加网站
-  addSiteButton.addEventListener('click', function() {
-    const site = siteInput.value.trim();
-    if (site) {
-      chrome.storage.sync.get(['sites'], function(result) {
-        const sites = result.sites || [];
-        if (!sites.includes(site)) {
-          sites.push(site);
-          chrome.storage.sync.set({sites: sites}, function() {
-            loadSites();
-            siteInput.value = '';
-          });
-        }
-      });
-    }
+  // 添加当前网站
+  addCurrentSiteButton.addEventListener('click', function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      if (tabs[0]) {
+        const url = new URL(tabs[0].url);
+        const domain = url.hostname;
+        addSite(domain);
+      }
+    });
   });
+
+  // 添加网站
+  function addSite(site) {
+    chrome.storage.sync.get(['sites'], function(result) {
+      const sites = result.sites || [];
+      if (!sites.includes(site)) {
+        sites.push(site);
+        chrome.storage.sync.set({sites: sites}, function() {
+          loadSites();
+        });
+      }
+    });
+  }
 
   // 加载网站列表
   function loadSites() {
@@ -75,33 +81,36 @@ document.addEventListener('DOMContentLoaded', function() {
       // 更新摸鱼状态
       if (currentSite) {
         fishingStatus.textContent = `当前正在摸鱼：${currentSite}`;
-        fishingStatus.style.color = 'red';
+        fishingStatus.style.backgroundColor = '#ffcccb';
       } else {
         fishingStatus.textContent = '当前不在摸鱼';
-        fishingStatus.style.color = 'green';
+        fishingStatus.style.backgroundColor = '#90EE90';
       }
 
       chrome.storage.sync.get(['timeStats'], function(result) {
         const stats = result.timeStats || {};
         timeStats.innerHTML = '<h3>浏览时间统计：</h3>';
         for (const site in stats) {
-          const totalSeconds = Math.round(stats[site]); // 总秒数
-          const hours = Math.floor(totalSeconds / 3600);
-          const minutes = Math.floor((totalSeconds % 3600) / 60);
-          const seconds = totalSeconds % 60;
-          
-          let timeString = '';
-          if (hours > 0) {
-            timeString += `${padZero(hours)}小时 `;
+          if (site && site !== 'null') {  // 添加这个检查
+            const totalSeconds = Math.round(stats[site]); // 总秒数
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            
+            let timeString = '';
+            if (hours > 0) {
+              timeString += `${padZero(hours)}小时 `;
+            }
+            if (hours > 0 || minutes > 0) {
+              timeString += `${padZero(minutes)}分钟 `;
+            }
+            timeString += `${padZero(seconds)}秒`;
+            
+            const div = document.createElement('div');
+            div.className = 'site-item';
+            div.textContent = `${site}: ${timeString}`;
+            timeStats.appendChild(div);
           }
-          if (hours > 0 || minutes > 0) {
-            timeString += `${padZero(minutes)}分钟 `;
-          }
-          timeString += `${padZero(seconds)}秒`;
-          
-          const div = document.createElement('div');
-          div.textContent = `${site}: ${timeString}`;
-          timeStats.appendChild(div);
         }
       });
     });
@@ -121,5 +130,24 @@ document.addEventListener('DOMContentLoaded', function() {
   // 当弹出窗口关闭时，清除定时器
   window.addEventListener('unload', function() {
     clearInterval(intervalId);
+  });
+
+  const resetStatsButton = document.getElementById('resetStats');
+  const autoResetCheckbox = document.getElementById('autoReset');
+
+  // 重置统计
+  resetStatsButton.addEventListener('click', function() {
+    chrome.storage.sync.set({timeStats: {}}, function() {
+      updateTimeStats();
+    });
+  });
+
+  // 加载和保存自动重置设置
+  chrome.storage.sync.get(['autoReset'], function(result) {
+    autoResetCheckbox.checked = result.autoReset || false;
+  });
+
+  autoResetCheckbox.addEventListener('change', function() {
+    chrome.storage.sync.set({autoReset: this.checked});
   });
 });

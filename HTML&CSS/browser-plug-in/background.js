@@ -24,10 +24,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 function isMonitoredSite(url) {
   const urlObj = new URL(url);
   const hostname = urlObj.hostname;
-  const fullPath = urlObj.hostname + urlObj.pathname;
-  return monitoredSites.some(site => 
-    hostname.includes(site) || fullPath.includes(site)
-  );
+  return monitoredSites.some(site => hostname.includes(site));
 }
 
 // 更新计时
@@ -56,7 +53,7 @@ function startTimer(tabId, hostname) {
 
 // 停止计时
 function stopTimer() {
-  if (startTime !== null && activeTabId !== null) {
+  if (startTime !== null && activeTabId !== null && currentFishingSite) {
     const duration = (Date.now() - startTime) / 1000; // 转换为秒
     
     console.log(`停止计时: ${currentFishingSite}, 持续时间: ${duration}秒`);
@@ -110,6 +107,22 @@ chrome.windows.onFocusChanged.addListener(function(windowId) {
   }
 });
 
+// 检查并执行每日重置
+function checkAndResetDaily() {
+  chrome.storage.sync.get(['lastResetDate', 'autoReset'], function(result) {
+    const today = new Date().toDateString();
+    if (result.autoReset && result.lastResetDate !== today) {
+      chrome.storage.sync.set({timeStats: {}, lastResetDate: today});
+    }
+  });
+}
+
+// 每小时检查一次是否需要重置
+setInterval(checkAndResetDaily, 3600000); // 3600000 毫秒 = 1 小时
+
+// 在浏览器启动时也检查一次
+chrome.runtime.onStartup.addListener(checkAndResetDaily);
+
 // 监听来自popup的消息
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.action === "getCurrentStatus") {
@@ -119,6 +132,11 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         updateTimer(tabs[0].id, tabs[0].url);
       }
       sendResponse({currentFishingSite: currentFishingSite});
+    });
+    return true; // 表示我们会异步发送响应
+  } else if (request.action === "resetStats") {
+    chrome.storage.sync.set({timeStats: {}}, function() {
+      sendResponse({success: true});
     });
     return true; // 表示我们会异步发送响应
   }
