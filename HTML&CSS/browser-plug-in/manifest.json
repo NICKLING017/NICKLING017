@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "摸鱼时间统计器",
   "version": "1.0",
   "description": "统计用户浏览指定网站的时间",
@@ -7,16 +7,16 @@
     "storage",
     "tabs",
     "activeTab",
-    "webNavigation",
-    "<all_urls>",
-    "scripting"
+    "webNavigation"
   ],
-  "browser_action": {
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "action": {
     "default_popup": "popup.html"
   },
   "background": {
-    "scripts": ["background.js"],
-    "persistent": false
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
@@ -27,6 +27,9 @@
     }
   ],
   "web_accessible_resources": [
-    "styles.css"
+    {
+      "resources": ["styles.css"],
+      "matches": ["<all_urls>"]
+    }
   ]
 }

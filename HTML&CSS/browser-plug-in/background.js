@@ -38,31 +38,17 @@ function updateTimer(tabId, url) {
       startTimer(tabId, new URL(url).hostname);
       
       chrome.storage.sync.get(['enableNotification', 'customMessage'], function(result) {
-        console.log('启用提示设置:', result.enableNotification); // 添加这行日志
-        if (result.enableNotification !== false) { // 默认为true
-          // 注入 CSS
-          chrome.tabs.insertCSS(tabId, {file: "content.css"}, function() {
+        console.log('启用提示设置:', result.enableNotification);
+        if (result.enableNotification !== false) {
+          const message = result.customMessage || '您正在摸鱼！';
+          chrome.tabs.sendMessage(tabId, {
+            action: 'showNotification',
+            message: message
+          }, function(response) {
             if (chrome.runtime.lastError) {
-              console.log('Error inserting CSS:', chrome.runtime.lastError);
-            }
-          });
-
-          // 注入并执行脚本
-          chrome.tabs.executeScript(tabId, {file: "content.js"}, function() {
-            if (chrome.runtime.lastError) {
-              console.log('Error executing script:', chrome.runtime.lastError);
+              console.log('Error sending message:', chrome.runtime.lastError);
             } else {
-              const message = result.customMessage || '您正在摸鱼！';
-              chrome.tabs.sendMessage(tabId, {
-                action: 'showNotification',
-                message: message
-              }, function(response) {
-                if (chrome.runtime.lastError) {
-                  console.log('Error sending message:', chrome.runtime.lastError);
-                } else {
-                  console.log('Message sent successfully');
-                }
-              });
+              console.log('Message sent successfully');
             }
           });
         }
@@ -150,10 +136,29 @@ function checkAndResetDaily() {
 }
 
 // 每小时检查一次是否需要重置
-setInterval(checkAndResetDaily, 3600000); // 3600000 毫秒 = 1 小时
+chrome.alarms.create('checkAndResetDaily', { periodInMinutes: 60 });
+chrome.alarms.create('updateStats', { periodInMinutes: 1/60 });
 
-// 在浏览器启动时也检查一次
-chrome.runtime.onStartup.addListener(checkAndResetDaily);
+chrome.alarms.onAlarm.addListener((alarm) => {
+  if (alarm.name === 'checkAndResetDaily') {
+    checkAndResetDaily();
+  } else if (alarm.name === 'updateStats') {
+    updateStats();
+  }
+});
+
+function updateStats() {
+  if (startTime !== null && activeTabId !== null && currentFishingSite) {
+    const duration = (Date.now() - startTime) / 1000; // 转换为秒
+    chrome.storage.sync.get(['timeStats'], function(result) {
+      let stats = result.timeStats || {};
+      stats[currentFishingSite] = (stats[currentFishingSite] || 0) + duration;
+      chrome.storage.sync.set({timeStats: stats});
+    });
+    startTime = Date.now(); // 重置开始时间
+    updateCurrentStatus(); // 确保当前状态始终是最新的
+  }
+}
 
 // 监听来自popup的消息
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -174,27 +179,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   }
 });
 
-// 定期更新存储中的时间（每1秒更新一次）
-setInterval(function() {
-  if (startTime !== null && activeTabId !== null && currentFishingSite) {
-    const duration = (Date.now() - startTime) / 1000; // 转换为秒
-    chrome.storage.sync.get(['timeStats'], function(result) {
-      let stats = result.timeStats || {};
-      stats[currentFishingSite] = (stats[currentFishingSite] || 0) + duration;
-      chrome.storage.sync.set({timeStats: stats});
-    });
-    startTime = Date.now(); // 重置开始时间
-    updateCurrentStatus(); // 确保当前状态始终是最新的
-  }
-}, 1000); // 每1秒更新一次
-
 // 添加这个新函数
 function updateBadge(isFishing) {
   if (isFishing) {
-    chrome.browserAction.setBadgeText({text: '摸鱼'});
-    chrome.browserAction.setBadgeBackgroundColor({color: '#FF0000'}); // 红色背景
+    chrome.action.setBadgeText({text: '摸鱼'});
+    chrome.action.setBadgeBackgroundColor({color: '#FF0000'}); // 红色背景
   } else {
-    chrome.browserAction.setBadgeText({text: ''});
+    chrome.action.setBadgeText({text: ''});
   }
 }
 
