@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Simulator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="navbar">
+        <div class="back-button" onclick="window.history.back();">返回</div>
+        <h1>Battle Simulator</h1>
+    </div>
+    
+    <div class="container">
+        <div class="battle-container">
+            <div class="team-section">
+                <div class="header-container">
+                    <h2>进攻方</h2>
+                    <p>英雄数量：<input type="number" id="offenseHeroCount" value="1" min="1"></p>
+                </div>
+                <div id="offenseHeroCards"></div>
+            </div>
+            
+            <div class="vs-container">
+                <div class="vs-icon">VS</div>
+                <button class="start-button">START</button>
+            </div>
+            
+            <div class="team-section">
+                <div class="header-container">
+                    <h2>防御方</h2>
+                    <p>英雄数量：<input type="number" id="defenseHeroCount" value="1" min="1"></p>
+                </div>
+                <div id="defenseHeroCards"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
