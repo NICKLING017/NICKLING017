@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dyfbc0p4woohk"]
+
+[ext_resource type="Script" path="res://Player/Player.gd" id="1_xtc8j"]
+[ext_resource type="PackedScene" uid="uid://bii0br3tayp3c" path="res://Bullet/Bullet.tscn" id="2_mhf1a"]
+[ext_resource type="Texture2D" uid="uid://d17db0m1aemvc" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Base.png" id="2_ogvqu"]
+
+[node name="Player" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("1_xtc8j")
+bullet_scene = ExtResource("2_mhf1a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+rotation = -1.5708
+scale = Vector2(3, 3)
+texture = ExtResource("2_ogvqu")
