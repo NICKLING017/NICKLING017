@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bii0br3tayp3c"]
+
+[ext_resource type="Script" path="res://GdScript/Bullet.gd" id="1_s8i48"]
+[ext_resource type="Texture2D" uid="uid://c0x4ebkaajfs8" path="res://Res/tds-modern-pixel-game-kit/tds-modern-hero-weapons-and-props/Effects/Rifle Shot/1.png" id="2_8dg0e"]
+
+[node name="Bullet" type="Node2D"]
+script = ExtResource("1_s8i48")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(3, 3)
+texture = ExtResource("2_8dg0e")
+
+[node name="Area2D" type="Area2D" parent="."]

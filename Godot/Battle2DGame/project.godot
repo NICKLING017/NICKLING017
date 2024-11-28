@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Battle 2d Game"
-run/main_scene="res://Main/Main.tscn"
+run/main_scene="res://scene/Main.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -27,7 +27,7 @@ project/assembly_name="Battle 2d Game"
 [importer_defaults]
 
 animation_library={
-"animation/fps": 120.0
+"animation/fps": 30.0
 }
 
 [input]

@@ -1,0 +1,65 @@
+[gd_scene load_steps=13 format=3 uid="uid://dyfbc0p4woohk"]
+
+[ext_resource type="Script" path="res://GdScript/Player.gd" id="1_3nh4x"]
+[ext_resource type="PackedScene" uid="uid://bii0br3tayp3c" path="res://scene/Bullet.tscn" id="2_mhf1a"]
+[ext_resource type="Texture2D" uid="uid://d17db0m1aemvc" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Base.png" id="3_1lgvk"]
+[ext_resource type="Texture2D" uid="uid://dnctfpgvuome1" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_01.png" id="3_tj674"]
+[ext_resource type="Texture2D" uid="uid://cjsjdkqheticy" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_02.png" id="4_fyyoh"]
+[ext_resource type="Texture2D" uid="uid://cbjvxmqgeq280" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Shot/Shot.png" id="4_grwwr"]
+[ext_resource type="Texture2D" uid="uid://qgeo43nnxr5d" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_03.png" id="5_1dufn"]
+[ext_resource type="Texture2D" uid="uid://dnyfnhhgo855a" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_04.png" id="6_kaotr"]
+[ext_resource type="Texture2D" uid="uid://cccl8eyx6jf32" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_05.png" id="7_7euen"]
+[ext_resource type="Texture2D" uid="uid://bgai7m1vrv5ts" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_06.png" id="8_2l2mh"]
+[ext_resource type="Texture2D" uid="uid://b0cuk58wh2d5m" path="res://Res/tds-modern-pixel-game-kit/tds-modern-soldiers-and-vehicles-sprites-2/Sniper/Walk/SW_07.png" id="9_e8kiq"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7u2nb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_tj674")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_fyyoh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1dufn")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_kaotr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_7euen")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_2l2mh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_e8kiq")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 10.0
+}]
+
+[node name="Player" type="Node2D"]
+
+[node name="Player" type="CharacterBody2D" parent="."]
+script = ExtResource("1_3nh4x")
+bullet_scene = ExtResource("2_mhf1a")
+base_texture = ExtResource("3_1lgvk")
+shot_texture = ExtResource("4_grwwr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player"]
+rotation = -1.5708
+scale = Vector2(3, 3)
+sprite_frames = SubResource("SpriteFrames_7u2nb")
+animation = &"Walk"
+frame = 3
+frame_progress = 0.579
+
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+rotation = -1.5708
+scale = Vector2(3, 3)
+texture = ExtResource("3_1lgvk")
