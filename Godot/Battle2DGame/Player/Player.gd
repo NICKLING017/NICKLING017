@@ -24,7 +24,7 @@ func _physics_process(delta):
 	move_and_slide()
 	#print(velocity)
 
-	 # 获取鼠标在世界中的位置
+	# 获取鼠标在世界中的位置
 	var mouse_position = get_global_mouse_position()
 	# 计算玩家到鼠标的方向
 	var direction = (mouse_position - global_position).normalized()
